@@ -2,11 +2,8 @@ var makeHaiku = require('./makeHaiku.js');
 var parseDict = require('./parseDict.js');
 
 var cmudictFile = parseDict.readFile('./cmudict.txt');
-var syl = parseDict.wordsBySyllCount(cmudictFile);
+var syl = parseDict.cmuBySyllCount(cmudictFile);
+var structure = [[1,1,1,1,1],[1,2,1,3],[3,1,1]];
 
 //console.log(parseDict.genericSyllCount(book));
-console.log(makeHaiku.createHaiku([
-  [2,2,1],
-  [3,1,3],
-  [3,2]
-], syl));
+console.log(makeHaiku.createHaiku(structure, syl));

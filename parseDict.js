@@ -15,7 +15,7 @@ exports.syllCount = function(phrase) {
   return count;
 }
 
-exports.wordsBySyllCount = function(data){
+exports.cmuBySyllCount = function(data){
   var wordsBySyllCount = {};
   var lines = data.split("\n"), lineSplit;
   lines.forEach(function(line) {

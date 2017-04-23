@@ -8,63 +8,78 @@ specific syllable pattern?
 
 */
 
-exports.genericParse = function(txt) {
-  var cmu = exports.syllCountByWord(cmudictFile);
-  txt = exports.puncRemover(txt);
-  var test1 = txt.join(" ");
-  txt.forEach(function(line){ // has thid as map but not returning anything, so changed to forEach
-    var wordsArr = line.split(" ");
-    var syll = 0;
-      var word1 = "";
-      for (var i = 0; i < txt.length; i++) {
-       if (wordsArr[i] !== undefined && isNaN(wordsArr[i])) {
-         syll = exports.findWordSylls(cmu,wordsArr[i]);
-         word1 = new RegExp('\\b' + wordsArr[i] + '\\b', 'gi');
-         // how to format syll & word to make it easy to search for haiku?
-         test1 = test1.replace(word1, syll);
-       }
-   }});
-   // map the test1 to the lines
-   return test1;
-}
-
-
 // HELPER FUNCTIONS
+var parseDict = require('./parseDict.js');
+var cmudictFile = parseDict.readFile('./cmudict.txt');
+var book = parseDict.readFile('./Carroll.txt');
 
-var cmudictFile = exports.readFile('./cmudict.txt');
-var book = exports.readFile('./Carroll.txt');
 
-// removes text's punctuations
-exports.puncRemover = function(text) {
+// 4/21 - I dont know if generic parse works right now, I split the text separation
+// into two processes: get the words, count the syllables. haven't verified
+// that both fxns work.
+
+
+module.exports = {
+  // find word's # of syllables if it has <8
+  // add the for loop into this funcion, because right now
+  // i have to finish syllList
+  findWordSylls: function(array, w) {
+    var elementPos = array.findIndex(function(x) {return x.word === w.toUpperCase(); })
+      if (elementPos !== -1 && array[elementPos].syllables < 8) return array[elementPos].syllables < 8;
+  },
+  // parses a formatted list of words separated by '\n'
+  syllCountByWord: function(array) {
+  var lines = array.split("\n"), lineSplit;
+  return lines.map(function(line) {
+    lineSplit = line.split("  ");
+    var count = exports.findWordSylls(lineSplit[1]);
+    if (count < 8) return { word: lineSplit[0], syllables: count };
+  });
+},
+
+  listParse: function(text) {
+    var list = text.split('\n');
+    //var cmuSylls = exports.syllCountByWord(cmudictFile);
+    // var syllList =
+    // ^^^^ finsish this one!!!have to rework findWordSylls :O
+    console.log(list);
+  },
+
+  // removes a text's punctuations
+  puncRemover: function(text) {
   return text.split('.').map(function(t) {
     return t.replace(/[^\w\s]|_/g, '')
          .replace(/\s+/g, ' ').trim();
-  })
+  });
+},
+
+
+// structures the CMU by word & syllable if it has <8 syll
+ // add genericParse: genericParse, back after you fix it
+
+
+// // parses a text file with punctuation
+// var genericParse = function(txt) {
+//   txt = puncRemover(txt);
+//   var test1 = txt.join(" ");
+//   var wordsArr = txt.map(function(line){
+//     return line.split(" ");
+//   });
+//   return wordsArr;
+//    // abstracting out the syll splice for its own run
+//    var textToSyllCount = function () {
+//     var cmu = syllCountByWord(cmudictFile);
+//     var syll = 0;
+//     var word1 = "";
+//     for (var i = 0; i < wordsArr.length; i++) {
+//       if (wordsArr[i] !== undefined && isNaN(wordsArr[i])) {
+//         syll = findWordSylls(cmu,wordsArr[i]);
+//         word1 = new RegExp('\\b' + wordsArr[i] + '\\b', 'gi');
+//         // how to format syll & word to make it easy to search for haiku?
+//         test1 = test1.replace(word1, syll);
+//    }
+//    // map the test1 to the lines
+//    return test1;
+// }
+//    }
 }
-
-
-
-// find word's # of syllables
-exports.findWordSylls = function(array, w) {
-  var elementPos = array.findIndex(function(x) {return x.word === w.toUpperCase(); })
-  if (elementPos === -1) {
-    return 0;
-  }
-  else {
-    return array[elementPos].syllables;
-  }
-}
-
-// structures the CMU by word & syllable
-exports.syllCountByWord = function(data){
-  var lines = data.split("\n"), lineSplit;
-  return lines.map(function(line) {
-    lineSplit = line.split("  ");
-    var word = lineSplit[0];
-    var count = exports.syllCount(lineSplit[1]);
-    return { word: lineSplit[0], syllables: count };
-    });
-}
-
-console.log(exports.genericParse(book));
-//console.log(exports.findWordSylls(exports.syllCountByWord(cmudictFile), 'able'));

@@ -1,13 +1,13 @@
 var fs = require("fs");
 
-exports.readFile = function(file){
+var readFile = function(file){
   return fs.readFileSync(file).toString();
 }
 
 var syllCount = function(phrase) {
   var count = 0;
     if (phrase) var syllables = phrase.match(/\d/g);
-      if(syllables) count = syllables.length;
+      if (syllables) count = syllables.length;
   return count;
 }
 
@@ -21,14 +21,14 @@ var cmuBySyllCount = function(data){
     if (syllables < 8) {
       if (syllTable.hasOwnProperty(syllables)) {
         syllTable[syllables].push(lineSplit[0]);
-      }
-      else syllTable[syllables] = [lineSplit[0]];
+      } else syllTable[syllables] = [lineSplit[0]];
     }
     });
   return syllTable;
 }
 
 module.exports = {
+  readFile: readFile,
   cmuBySyllCount: cmuBySyllCount,
   syllCount: syllCount
 }

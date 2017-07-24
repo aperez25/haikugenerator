@@ -1,6 +1,6 @@
 var chalk = require('chalk');
 var makeHaiku = require('./makeHaiku.js');
-var parseDict = require('./parseDict.js');
+var parseDict = require('../parseDict.js');
 
 var cmudictFile = parseDict.readFile('./cmudict.txt');
 var syl = parseDict.cmuBySyllCount(cmudictFile);

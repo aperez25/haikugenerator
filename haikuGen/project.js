@@ -1,17 +1,16 @@
-var fs = require("fs");
-var cmudictFile = readCmudictFile('./cmudict.txt');
+const fs = require('fs');
 
-function readCmudictFile(file){
+const cmudictFile = readCmudictFile('./cmudict.txt');
+
+function readCmudictFile(file) {
   return fs.readFileSync(file).toString();
 }
 
-function formatData(data){
-   var lines = data.toString().split("\n"),
-       lineSplit
-   lines.forEach(function(line){
-    lineSplit = line.split("  ");
-    console.log("The word " + lineSplit[0] + " has this phoneme    layout: " + lineSplit[1]);
-
+function formatData(data) {
+  const lines = data.toString().split('\n');
+  var lineSplit = []
+  lines.forEach((line) => {
+    lineSplit = line.split('  ');
   });
 }
 

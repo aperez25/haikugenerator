@@ -1,23 +1,23 @@
-var fs = require("fs");
+const fs = require('fs');
 
-var readFile = function(file){
-  return fs.readFileSync(file).toString();
-}
+const readFile = file => fs.readFileSync(file).toString();
 
-var syllCount = function(phrase) {
-  var count = 0;
-    if (phrase) var syllables = phrase.match(/\d/g);
-      if (syllables) count = syllables.length;
+const syllCount = (phrase) => {
+  let count = 0;
+  let syllables = '';
+  if (phrase) syllables = phrase.match(/\d/g);
+  if (syllables) count = syllables.length;
   return count;
 }
 
-var cmuBySyllCount = function(data){
-  var syllTable = {};
-  var lines = data.split("\n"), lineSplit;
-  lines.forEach(function(line) {
-    lineSplit = line.split("  ");
+const cmuBySyllCount = (data) => {
+  const syllTable = {};
+  const lines = data.split('\n');
+  let lineSplit;
+  lines.forEach((line) => {
+    lineSplit = line.split('  ');
     lineSplit[0] = lineSplit[0].replace(/[(\d)]/g, '');
-    var syllables = syllCount(lineSplit[1]);
+    const syllables = syllCount(lineSplit[1]);
     if (syllables < 8) {
       if (syllTable.hasOwnProperty(syllables)) {
         syllTable[syllables].push(lineSplit[0]);
@@ -28,7 +28,7 @@ var cmuBySyllCount = function(data){
 }
 
 module.exports = {
-  readFile: readFile,
-  cmuBySyllCount: cmuBySyllCount,
-  syllCount: syllCount
+  readFile,
+  cmuBySyllCount,
+  syllCount,
 }
